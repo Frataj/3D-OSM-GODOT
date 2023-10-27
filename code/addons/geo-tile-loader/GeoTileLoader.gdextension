@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "gdext_rust_init"
+compatibility_minimum = 4.1
+
+[libraries]
+linux.x86_64 = "libgodot_mvt.so"
+windows.x86_64 = "godot_mvt.dll"
+macos = "libgodot_mvt.dylib"
