@@ -1,10 +1,11 @@
-static func generate_polygon(vectors):
+static func generate_polygon(vectors, height, color):
 	var polygon = CSGPolygon3D.new()
-	polygon.depth = 2.5
+	polygon.material = StandardMaterial3D.new()
+	polygon.material.albedo_color = color
+	polygon.depth = height
 	polygon.polygon = vectors
 	polygon.use_collision = true
 	polygon.rotate(Vector3(1,0,0), deg_to_rad(90))
-	print("hello from generate_polygon")
 	return polygon
 
 static func calculate_polygon_vectors(sanitized_geometries):
@@ -55,17 +56,17 @@ static func get_polygon_geometries(polygons):
 	return polygon_geometries
 
 
-static func get_polygon_features(tile):
+static func get_polygon_features(tile, type):
 	var polygons
 	var layers = tile.layers()
 	for i in layers.size():
-		if layers[i].name() == "building":
+		if layers[i].name() == type:
 			polygons = layers[i]
 	return polygons.features()
 
 
-static func get_polygon_vectors(tile):
-	var polygon = get_polygon_features(tile)
+static func get_polygon_vectors(tile, type):
+	var polygon = get_polygon_features(tile, type)
 	var geometries = get_polygon_geometries(polygon)
 	var sanitized_geometries = get_sanitized_polygon_geometries(geometries)
 	return calculate_polygon_vectors(sanitized_geometries)
