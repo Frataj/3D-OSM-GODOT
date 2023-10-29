@@ -52,12 +52,20 @@ func _input(event):
 func _physics_process(delta):
 	var moving = false
 	# Add the gravity. Pulls value from project settings.
-	if not is_on_floor():
-		velocity.y -= gravity * delta
 
 	# Handle Jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+	
+	if Input.is_action_pressed("fly_up"):
+		velocity.y = 20
+	if Input.is_action_just_released("fly_up"):
+		velocity.y = 0
+	
+	if Input.is_action_pressed("fly_down"):
+		velocity.y = -20
+	if Input.is_action_just_released("fly_down"):
+		velocity.y = 0
 	
 	if Input.is_action_just_pressed("superjump"):
 		velocity.y = 50
@@ -74,7 +82,7 @@ func _physics_process(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with a custom keymap depending on your control scheme. These strings default to the arrow keys layout.
-	var input_dir = Input.get_vector("move_forward", "move_right", "move_backwards", "move_left")
+	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized() * accel * delta
 	if Input.is_key_pressed(KEY_SHIFT):
 		direction = direction * SPRINT_MULT

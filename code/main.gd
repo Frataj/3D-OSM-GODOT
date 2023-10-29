@@ -4,6 +4,7 @@ extends Node3D
 
 const MVT = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
 const CALCULATE_POLYGON = preload("res://src/calculate_polygon_vectors.gd")
+const ROADS = preload("res://src/roads.gd")
 
 # key represents the height
 const polygon_types = {
@@ -13,8 +14,8 @@ const polygon_types = {
 }
 
 func _ready():
-	var start_x = 34373
-	var start_y = 42544
+	var start_x = 34317
+	var start_y = 42582
 	var start_tile_path = "res://tiles/switzerland/16/" + str(start_x) + "/" + str(start_y) + ".pbf"
 	
 	var tile = MVT.load_tile_gz(start_tile_path)
@@ -25,6 +26,11 @@ func _ready():
 		for polygon in polygons:
 			var color = polygon_type_data[1]
 			add_child(CALCULATE_POLYGON.generate_polygon(polygon, height, color))
+			
+	for layer in tile.layers():
+		if layer.name() == "transportation":
+			for feature in layer.features():
+				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), self)
 	
 func _process(delta):
 	pass
