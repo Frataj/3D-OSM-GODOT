@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://beh8eahr3g53c"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_e256x"]
+[ext_resource type="PackedScene" uid="uid://dgpjxoygnvyy4" path="res://assets/simple_fpsplayer/Player.tscn" id="1_yhjom"]
+
+[node name="main_world" type="Node3D"]
+script = ExtResource("1_e256x")
+
+[node name="Player" parent="." instance=ExtResource("1_yhjom")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 90.6147, 0)

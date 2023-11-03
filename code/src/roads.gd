@@ -6,7 +6,8 @@ static func build_road_geometries(feature_geometry):
 	var last_point_of_prev_path = Vector3(0,0,0)
 	#path_points = Array of Vector3s
 	var path_points = []
-	for i in range(0, feature_geometry.size()-1, 1):
+	var i = 0
+	for geometry in feature_geometry:
 		#if currently looked at array is for a start point,
 		#clear path_points, set current_point to the start point
 		#and append current point to path_points
@@ -32,14 +33,15 @@ static func build_road_geometries(feature_geometry):
 		#if currently looked at array defines a close shape
 		#append the start point again, so the path gets closed
 		#append path_points to path
-		if feature_geometry[i+1][0] == 7:
+		if feature_geometry[i][0] == 7:
 			path_points.append(start_point)
+		i+=1
 	return paths
 
 #for every entry, 
 #make a new CSGPolygon, so we can change the path-type by tag later
 #make a new Path3D with the points in the entry as points in the path
-static func generate_paths(path_points, caller_node):
+static func generate_paths(path_points, caller_node, color):
 	for path in path_points:
 		var path3d = Path3D.new()
 		var curve = Curve3D.new()
@@ -48,9 +50,9 @@ static func generate_paths(path_points, caller_node):
 			curve.add_point(point/100)
 		path3d.curve = curve
 		caller_node.add_child(path3d)
-		polygon.polygon = [Vector2(-1,0), Vector2(0,0.5), Vector2(1,0.5), Vector2(1,0)]
+		polygon.polygon = [Vector2(-1,1), Vector2(0,1.5), Vector2(1,1.5), Vector2(1,1)]
 		polygon.material = StandardMaterial3D.new()
-		polygon.material.albedo_color = Color(0,0,0)
+		polygon.material.albedo_color = color
 		polygon.mode = CSGPolygon3D.MODE_PATH
 		polygon.path_interval = 0.5
 		polygon.path_node = path3d.get_path()
