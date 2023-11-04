@@ -9,8 +9,8 @@ const ROADS = preload("res://src/roads.gd")
 # key represents the height
 const polygon_types = {
 	10: ["building", Color(211, 211, 211, 255)],
-	2: ["landcover", Color(0, 255, 0, 255)],
-	0: ["water", Color(0, 0, 255, 255)],
+	-1: ["landcover", Color(0, 255, 0, 255)],
+	2: ["water", Color(0, 0, 255, 255)],
 }
 
 func _ready():
@@ -30,7 +30,10 @@ func _ready():
 	for layer in tile.layers():
 		if layer.name() == "transportation":
 			for feature in layer.features():
-				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), self)
-	
+				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), self, Color(0,0,0,255))
+		if layer.name() == "waterway":
+			for feature in layer.features():
+				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), self, Color(0,0,255,255))
+				
 func _process(delta):
 	pass
