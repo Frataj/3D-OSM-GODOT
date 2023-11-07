@@ -51,8 +51,6 @@ func _input(event):
 
 func _physics_process(delta):
 	var moving = false
-	# Add the gravity. Pulls value from project settings.
-
 	# Handle Jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -68,7 +66,7 @@ func _physics_process(delta):
 		velocity.y = 0
 	
 	if Input.is_action_just_pressed("superjump"):
-		velocity.y = 50
+		print(position)
 	
 	# This just controls acceleration. Don't touch it.
 	var accel
