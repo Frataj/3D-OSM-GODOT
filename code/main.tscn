@@ -8,3 +8,5 @@ script = ExtResource("1_e256x")
 
 [node name="Player" parent="." instance=ExtResource("1_yhjom")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 90.6147, 0)
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
