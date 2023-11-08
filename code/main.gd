@@ -5,6 +5,7 @@ extends Node3D
 const MVT = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
 const CALCULATE_POLYGON = preload("res://src/calculate_polygon_vectors.gd")
 const ROADS = preload("res://src/roads.gd")
+const POIS = preload("res://src/pois.gd")
 
 # key represents the height
 const polygon_types = {
@@ -43,6 +44,8 @@ func _on_request_completed(result, response_code, headers, body):
 		if layer.name() == "water":
 			for feature in layer.features():
 				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), self, Color(0,0,255,255))
+
+	POIS.generate_pois(tile, self, 0, 0)
 
 func _process(delta):
 	pass

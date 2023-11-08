@@ -1,0 +1,77 @@
+# Blender 3.4.0 MTL File: 'GenTree_105_AE3D_03122023-F2.blend'
+# www.blender.org
+
+newmtl Material
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+Pm 0.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
+map_Kd textures/GenTree_1_Trunk_Limbs_AE3D_03312023-A-DIFFUSE.png
+map_Pr textures/GenTree_1_Trunk_Limbs_AE3D_03312023-A-SMOOTH.png
+
+newmtl Material.009_-_TWIGS
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+Pr 0.500000
+Pm 0.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
+map_Kd textures/GenTree_1_Twigs_AE3D_03312023-A-DIFFUSE.png
+
+newmtl Material.010_-_Leaves
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 1
+Pr 0.500000
+Pm 0.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
+map_Kd textures/Maple_AE3D_03272021-A2-50pc.png
+map_d textures/Maple_AE3D_03272021-A2-50pc.png
+
+newmtl Material.011_-_Secondary_Limbs
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+Pm 0.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
+map_Kd textures/GenTree_1_Trunk_Limbs_AE3D_03312023-A-DIFFUSE.png
+map_Pr textures/GenTree_1_Trunk_Limbs_AE3D_03312023-A-SMOOTH.png
+
+newmtl Material.012_-_TRUNK
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+Pm 0.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
+map_Kd textures/GenTree_1_Trunk_Limbs_AE3D_03312023-A-DIFFUSE.png
+map_Pr textures/GenTree_1_Trunk_Limbs_AE3D_03312023-A-SMOOTH.png
