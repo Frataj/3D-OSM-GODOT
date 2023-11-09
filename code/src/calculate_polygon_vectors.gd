@@ -68,6 +68,5 @@ static func get_polygon_features(tile, type):
 static func get_polygon_vectors(tile, type):
 	var polygon = get_polygon_features(tile, type)
 	var geometries = get_polygon_geometries(polygon)
-	print(geometries)
 	var sanitized_geometries = get_sanitized_polygon_geometries(geometries)
 	return calculate_polygon_vectors(sanitized_geometries)

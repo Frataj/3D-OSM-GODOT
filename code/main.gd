@@ -29,6 +29,7 @@ func _on_request_completed(result, response_code, headers, body):
 	
 	for height in polygon_types.keys():
 		var polygon_type_data = polygon_types[height]
+		var polygon_type_data_spec = polygon_type_data[0]
 		var polygons = CALCULATE_POLYGON.get_polygon_vectors(tile, polygon_type_data[0])
 		for polygon in polygons:
 			var color = polygon_type_data[1]
