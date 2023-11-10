@@ -12,19 +12,29 @@ const polygon_types = {
 #	2: ["water", Color(0, 0, 255, 255)],
 }
 
+var x = null;
+var y = null;
+
 var current_tile_path = ""
+
+var webserver = WEBSERVER.new()
 
 func set_current_tile_path(path):
 	current_tile_path = path
 
+func set_x(value):
+	x = value
+	
+func set_y(value):
+	y = value
+
 func _ready():
-	var webserver = WEBSERVER.new()
 	add_child(webserver)
 	
 	webserver.connect("download_completed", _on_download_completed)
 	
-	var x = 34316
-	var y = 22955
+	set_x(34317)
+	set_y(22953)
 	
 	set_current_tile_path("res://tiles/" + str(x) + str(y))
 	webserver.downloadFile(x, y)
