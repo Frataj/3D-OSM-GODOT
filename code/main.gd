@@ -16,7 +16,6 @@ const polygon_types = {
 func _ready():
 	var start_x = 34316
 	var start_y = 22954
-	#16/53
 
 	var tile_http_link = "https://tiles.streets.gl/vector/16/" + str(start_x) + "/" + str(start_y)
 	var downloaded_tile = "res://tiles/" + str(start_x) + str(start_y)
