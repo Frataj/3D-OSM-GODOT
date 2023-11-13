@@ -14,13 +14,8 @@ const polygon_types = {
 
 var x = null;
 var y = null;
-
 var current_tile_path = ""
-
 var webserver = WEBSERVER.new()
-
-func set_current_tile_path(path):
-	current_tile_path = path
 
 func set_x(value):
 	x = value
@@ -28,9 +23,11 @@ func set_x(value):
 func set_y(value):
 	y = value
 
+func set_current_tile_path(path):
+	current_tile_path = path
+
 func _ready():
 	add_child(webserver)
-	
 	webserver.connect("download_completed", _on_download_completed)
 	
 	set_x(34317)
@@ -45,12 +42,12 @@ func _on_download_completed(success):
 	else:
 		print("Download failed or timed out.")
 		
-func render_geometries():
+func render_geometries():	
 	var tile = MVT.load_tile(current_tile_path)
 	
 	for height in polygon_types.keys():
 		var polygon_type_data = polygon_types[height]
-		var polygons = CALCULATE_POLYGON.get_polygon_vectors(tile, polygon_type_data[0])
+		var polygons = CALCULATE_POLYGON.get_polygon_vectors(tile, polygon_type_data[0], 0, 0)
 		for polygon in polygons:
 			var color = polygon_type_data[1]
 			add_child(CALCULATE_POLYGON.generate_polygon(polygon, height, color))
@@ -58,10 +55,13 @@ func render_geometries():
 	for layer in tile.layers():
 		if layer.name() == "highways":
 			for feature in layer.features():
-				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), self, Color(0,0,0,255))
+				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), self, Color(0,0,0,255), 0, 0)
 		if layer.name() == "water":
 			for feature in layer.features():
-				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), self, Color(0,0,255,255))
+				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), self, Color(0,0,255,255), 0, 0)
 
 func _process(delta):
-	pass
+	var current_location = $Player.position
+	var distance = Vector3(0,0,0) - current_location
+	if distance.x > 20:
+	print("(", distance.x, ", ", distance.z, ")")
