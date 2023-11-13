@@ -20,9 +20,7 @@ static func calculate_polygon_vectors(sanitized_geometries, offset_x, offset_y):
 		for i in range(0, sanitized_geometries[n].size() - 1, 2):
 			var x = sanitized_geometries[n][i]
 			var y = sanitized_geometries[n][i+1]
-
 			initial_vector += + Vector2(x, y)
-
 			vectors.append((initial_vector / 100) + Vector2(offset_x, offset_y))
 
 		polygon_vectors.append(vectors)
