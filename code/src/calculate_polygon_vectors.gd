@@ -1,7 +1,8 @@
-static func generate_polygon(vectors, height, color):
+static func generate_polygon(vectors, height, color, layer_name):
 	var polygon = CSGPolygon3D.new()
-	polygon.material = StandardMaterial3D.new()
-	polygon.material.albedo_color = color
+	if layer_name != "buildings":
+		polygon.material = StandardMaterial3D.new()
+		polygon.material.albedo_color = color
 	polygon.depth = height
 	polygon.polygon = vectors
 	polygon.use_collision = true

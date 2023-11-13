@@ -1,12 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://beh8eahr3g53c"]
+[gd_scene load_steps=3 format=3 uid="uid://beh8eahr3g53c"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_e256x"]
 [ext_resource type="PackedScene" uid="uid://dgpjxoygnvyy4" path="res://assets/simple_fpsplayer/Player.tscn" id="1_yhjom"]
-[ext_resource type="ArrayMesh" uid="uid://bnru4kp63d7nw" path="res://assets/GenTree_105_AE3D_03122023-F2.obj" id="3_n7c86"]
-
-[sub_resource type="MultiMesh" id="MultiMesh_floh8"]
-transform_format = 1
-mesh = ExtResource("3_n7c86")
 
 [node name="main_world" type="Node3D"]
 script = ExtResource("1_e256x")
@@ -14,17 +9,6 @@ script = ExtResource("1_e256x")
 [node name="Player" parent="." instance=ExtResource("1_yhjom")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 90.6147, 0)
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
-
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
-visible = false
-multimesh = SubResource("MultiMesh_floh8")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-visible = false
-skeleton = NodePath("../MultiMeshInstance3D")
-
-[node name="GenTree105Ae3d03122023-f2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.212, 109.137, -191.421)
-visible = false
-mesh = ExtResource("3_n7c86")
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.4892, 0.872172, 0, -0.872172, -0.4892, 0, 268.513, 0)
+shadow_enabled = true
