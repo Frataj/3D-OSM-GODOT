@@ -8,7 +8,7 @@ static func generate_polygon(vectors, height, color):
 	polygon.rotate(Vector3(1,0,0), deg_to_rad(90))
 	return polygon
 
-static func calculate_polygon_vectors(sanitized_geometries):
+static func calculate_polygon_vectors(sanitized_geometries, offset_x, offset_y):
 	var size = sanitized_geometries.size()
 	var polygon_vectors = []
 
@@ -21,7 +21,7 @@ static func calculate_polygon_vectors(sanitized_geometries):
 			var y = sanitized_geometries[n][i+1]
 
 			initial_vector += + Vector2(x, y)
-			vectors.append(initial_vector / 100)
+			vectors.append((initial_vector / 100) + Vector2(offset_x, offset_y))
 
 		polygon_vectors.append(vectors)
 
@@ -65,8 +65,8 @@ static func get_polygon_features(tile, type):
 	return polygons.features()
 
 
-static func get_polygon_vectors(tile, type):
+static func get_polygon_vectors(tile, type, offset_x, offset_y):
 	var polygon = get_polygon_features(tile, type)
 	var geometries = get_polygon_geometries(polygon)
 	var sanitized_geometries = get_sanitized_polygon_geometries(geometries)
-	return calculate_polygon_vectors(sanitized_geometries)
+	return calculate_polygon_vectors(sanitized_geometries, offset_x, offset_y)

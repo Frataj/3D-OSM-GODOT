@@ -67,8 +67,8 @@ func _physics_process(delta):
 	if Input.is_action_just_released("fly_down"):
 		velocity.y = 0
 	
-	if Input.is_action_just_pressed("superjump"):
-		velocity.y = 50
+	if Input.is_action_just_pressed("extra_action"):
+		print(position)
 	
 	# This just controls acceleration. Don't touch it.
 	var accel

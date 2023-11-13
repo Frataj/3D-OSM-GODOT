@@ -41,13 +41,13 @@ static func build_road_geometries(feature_geometry):
 #for every entry, 
 #make a new CSGPolygon, so we can change the path-type by tag later
 #make a new Path3D with the points in the entry as points in the path
-static func generate_paths(path_points, caller_node, color):
+static func generate_paths(path_points, caller_node, color, offset_x, offset_y):
 	for path in path_points:
 		var path3d = Path3D.new()
 		var curve = Curve3D.new()
 		var polygon = CSGPolygon3D.new()
 		for point in path:
-			curve.add_point(point/100)
+			curve.add_point((point/100) + Vector3(offset_x, 0, offset_y))
 		path3d.curve = curve
 		caller_node.add_child(path3d)
 		polygon.polygon = [Vector2(-1,1), Vector2(0,1.5), Vector2(1,1.5), Vector2(1,1)]
