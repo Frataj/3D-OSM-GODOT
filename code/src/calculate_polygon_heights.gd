@@ -10,7 +10,9 @@ static func get_polygon_height(tile, type):
 			for feature in layer.features():
 				var tag = feature.tags(layer)
 				
-				if tag.has(HEIGHT_IN_LEVELS):
+				if layer.name() == "common":
+					heights.append(0.001)
+				elif tag.has(HEIGHT_IN_LEVELS):
 					heights.append(tag[HEIGHT_IN_LEVELS] * 2.75)
 				elif tag.has(HEIGHT_IN_METERS):
 					heights.append(tag[HEIGHT_IN_METERS])
