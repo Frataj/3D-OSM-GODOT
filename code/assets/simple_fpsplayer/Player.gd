@@ -58,12 +58,12 @@ func _physics_process(delta):
 		velocity.y = JUMP_VELOCITY
 	
 	if Input.is_action_pressed("fly_up"):
-		velocity.y = 20
+		velocity.y = 100
 	if Input.is_action_just_released("fly_up"):
 		velocity.y = 0
 	
 	if Input.is_action_pressed("fly_down"):
-		velocity.y = -20
+		velocity.y = -100
 	if Input.is_action_just_released("fly_down"):
 		velocity.y = 0
 	
