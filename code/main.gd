@@ -1,12 +1,21 @@
 extends Node3D
 
-const MVT = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
+const MVT_READER = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
 const WEBSERVER = preload("res://src/webserver.gd")
 
-const CALCULATE_POLYGON = preload("res://src/calculate_polygon_vectors.gd")
-const CALCULATE_POLYGON_HEIGHT = preload("res://src/calculate_polygon_heights.gd")
-const POINTS = preload("res://src/pois.gd")
-const ROADS = preload("res://src/roads.gd")
+const CALCULATE_POLYGON_VECTORS = preload("res://src/polygons/calculate_polygon_vectors.gd")
+const CALCULATE_POLYGON_HEIGHT = preload("res://src/polygons/calculate_polygon_heights.gd")
+
+const CALCULATE_LINESTRING_VECTORS = preload("res://src/linestrings/calculate_linestring_vectors.gd")
+const BUILD_LINESTRINGS = preload("res://src/linestrings/build_linestring.gd")
+
+const POINTS = preload("res://src/points/pois.gd")
+
+const BUILDINGS = "buildings"
+const HIGHWAYS = "highways"
+const WATER = "water"
+const POINT = "point"
+
 
 # key represents the height
 const polygon_types = {
@@ -29,13 +38,13 @@ var process_x = null
 var process_y = null
 
 func _ready():
-#loading of initial 3*3 area
+#loading of initial 4*4 area
 	for i in range(-2, 2, 1):
 		for j in range(-2, 2, 1):
 			var tile_node = Node3D.new()
 			tile_node.name = str(x + i) + str(y + j)
-			var webserver = WEBSERVER.new()
 			add_child(tile_node)
+			var webserver = WEBSERVER.new()
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			process_x = x + i
@@ -54,35 +63,35 @@ func _on_download_completed(success, current_x, current_y, offset_x, offset_y):
 
 func render_geometries(x, y, offset_x, offset_y):
 	var tilepath = "res://tiles/" + str(x) + str(y)
-	var tile = MVT.load_tile(tilepath)
+	var tile = MVT_READER.load_tile(tilepath)
 	
 	var current_tile_node_path = str(x) + str(y)
-	print(current_tile_node_path)
-	var tile_current = get_node(current_tile_node_path)
+	var tile_node_current = get_node(current_tile_node_path)
 	
-	print("expected: " + tile_current.name)
 	for layer in tile.layers():
-		if layer.name() == "highways":
+		if layer.name() == HIGHWAYS:
 			for feature in layer.features():
-				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), tile_current, Color(0,0,0,255), offset_x, offset_y)
+				var linestring_geometries = CALCULATE_LINESTRING_VECTORS.build_linestring_geometries(feature.geometry())
+				BUILD_LINESTRINGS.generate_paths(linestring_geometries, tile_node_current, Color(0, 0, 0, 255), offset_x, offset_y)
 
-		if layer.name() == "water":
+		if layer.name() == WATER:
 			for feature in layer.features():
-				ROADS.generate_paths(ROADS.build_road_geometries(feature.geometry()), tile_current, Color(0,0,255,255), offset_x, offset_y)
+				var linestring_geometries = CALCULATE_LINESTRING_VECTORS.build_linestring_geometries(feature.geometry())
+				BUILD_LINESTRINGS.generate_paths(linestring_geometries, tile_node_current, Color(0,0,255,255), offset_x, offset_y)
 
-		if layer.name() == "point":
+		if layer.name() == POINT:
 			pass
 			#POINTS.generate_pois(tile, tile_current, offset_x, offset_y)
 
 		for height in polygon_types.keys():
 			var polygon_type_data = polygon_types[height]
 			if polygon_type_data[0] == layer.name():
-				var polygons = CALCULATE_POLYGON.get_polygon_vectors(tile, polygon_type_data[0], offset_x, offset_y)
+				var polygons = CALCULATE_POLYGON_VECTORS.get_polygon_vectors(tile, polygon_type_data[0], offset_x, offset_y)
 				var polygon_heights = CALCULATE_POLYGON_HEIGHT.get_polygon_height(tile, polygon_type_data[0])
 
 				for i in range(polygons.size()):
 					var color = polygon_type_data[1]
-					tile_current.add_child(CALCULATE_POLYGON.generate_polygon(polygons[i], polygon_heights[i], color, layer.name()))
+					tile_node_current.add_child(CALCULATE_POLYGON_VECTORS.generate_polygon(polygons[i], polygon_heights[i], color, layer.name()))
 
 func _process(delta):
 	var current_location = $Player.position

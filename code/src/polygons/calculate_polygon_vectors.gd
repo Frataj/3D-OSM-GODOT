@@ -1,6 +1,19 @@
+const BUILDING_LAYER = "buildings"
+
 static func generate_polygon(vectors, height, color, layer_name):
 	var polygon = CSGPolygon3D.new()
-	if layer_name != "buildings":
+	if layer_name != BUILDING_LAYER:
+		polygon.material = StandardMaterial3D.new()
+		polygon.material.albedo_color = color
+	polygon.depth = height
+	polygon.polygon = vectors
+	polygon.use_collision = true
+	polygon.rotate(Vector3(1,0,0), deg_to_rad(90))
+	return polygon
+	
+static func generate_polygons(vectors, height, color, layer_name):
+	var polygon = CSGPolygon3D.new()
+	if layer_name != BUILDING_LAYER:
 		polygon.material = StandardMaterial3D.new()
 		polygon.material.albedo_color = color
 	polygon.depth = height
