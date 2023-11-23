@@ -101,6 +101,7 @@ func _process(delta):
 	#load tiles if going to wards positive x loaded border
 	if(tile_distance_x > (tiles_loaded_x_max - 2)):
 		tiles_loaded_x_max += 1
+		tiles_loaded_x_min += 1
 		process_x = process_x + 2
 		for i in range(tiles_loaded_y_min, tiles_loaded_y_max, 1):
 			var webserver = WEBSERVER.new()
@@ -111,10 +112,11 @@ func _process(delta):
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.downloadFile(process_x, process_y+i, 655.25*(tiles_loaded_x_max - 1), 655.25*i)
-		tiles_loaded_x_min += 1
+		process_x = process_x - 1
 		
 	#load tiles of going towards negative x border
 	if(tile_distance_x < (tiles_loaded_x_min + 2)):
+		tiles_loaded_x_max -= 1
 		tiles_loaded_x_min -= 1
 		process_x = process_x - 3
 		for i in range(tiles_loaded_y_min, tiles_loaded_y_max, 1):
@@ -126,11 +128,12 @@ func _process(delta):
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.downloadFile(process_x, process_y + i, 655.25*(tiles_loaded_x_min), 655.25*i)
-		tiles_loaded_x_max -= 1
-	
+		process_x = process_x + 2
+
 	#load tiles if going towards positive y border
 	if(tile_distance_y > (tiles_loaded_y_max - 2)):
 		tiles_loaded_y_max += 1
+		tiles_loaded_y_min += 1
 		process_y = process_y + 2
 		for i in range(tiles_loaded_x_min, tiles_loaded_x_max, 1):
 			var webserver = WEBSERVER.new()
@@ -141,10 +144,11 @@ func _process(delta):
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.downloadFile(process_x + i, process_y, 655.25*i, 655.25*(tiles_loaded_y_max - 1))
-		tiles_loaded_y_min += 1
-	
+		process_y = process_y -1
+
 	#load tiles if going towards negative y border
 	if(tile_distance_y < (tiles_loaded_y_min + 2)):
+		tiles_loaded_y_max -= 1
 		tiles_loaded_y_min -= 1
 		process_y = process_y - 3
 		for i in range(tiles_loaded_x_min, tiles_loaded_x_max, 1):
@@ -152,8 +156,8 @@ func _process(delta):
 			var tile_node = Node3D.new()
 			add_child(tile_node)
 			tile_node.name = str(process_x + i) + str(process_y)
-			print(tile_node.name + "loading")
+			print(tile_node.name + " loading")
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.downloadFile(process_x + i, process_y, 655.25*i, 655.25*tiles_loaded_y_min)
-		tiles_loaded_y_max -= 1
+		process_y = process_y + 2
