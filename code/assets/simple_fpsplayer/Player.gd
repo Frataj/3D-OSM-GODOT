@@ -3,7 +3,7 @@ extends CharacterBody3D
 const ACCEL = 10
 const DEACCEL = 30
 
-const SPEED = 50.0
+const SPEED = 300.0
 const SPRINT_MULT = 4
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.06

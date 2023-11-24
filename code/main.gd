@@ -37,6 +37,9 @@ const y = 22947
 var process_x = null
 var process_y = null
 
+var steps_x = 0
+var steps_y = 0
+
 func _ready():
 #loading of initial 4*4 area
 	for i in range(-2, 2, 1):
@@ -98,12 +101,18 @@ func _process(delta):
 	var tile_distance_x = int(current_location.x/655.25)
 	var tile_distance_y = int(current_location.z/655.25)
 	
+	var a = -2
+	var b = 2
+	
 	#load tiles if going to wards positive x loaded border
 	if(tile_distance_x > (tiles_loaded_x_max - 2)):
 		tiles_loaded_x_max += 1
 		tiles_loaded_x_min += 1
 		process_x = process_x + 2
-		for i in range(tiles_loaded_y_min, tiles_loaded_y_max, 1):
+		
+		steps_x += 1
+		
+		for i in range(a, b, 1):
 			var webserver = WEBSERVER.new()
 			var tile_node = Node3D.new()
 			add_child(tile_node)
@@ -111,7 +120,11 @@ func _process(delta):
 			print(tile_node.name + "loading")
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
-			webserver.downloadFile(process_x, process_y+i, 655.25*(tiles_loaded_x_max - 1), 655.25*i)
+			webserver.downloadFile(process_x, process_y+i, 655.25*(tiles_loaded_x_max - 1), 655.25*(i + steps_y))
+			
+			var childnode = get_node(str(process_x - 4) + str(process_y + i))
+			remove_child(childnode)
+			
 		process_x = process_x - 1
 		
 	#load tiles of going towards negative x border
@@ -119,7 +132,10 @@ func _process(delta):
 		tiles_loaded_x_max -= 1
 		tiles_loaded_x_min -= 1
 		process_x = process_x - 3
-		for i in range(tiles_loaded_y_min, tiles_loaded_y_max, 1):
+		
+		steps_x -= 1
+		
+		for i in range(a, b, 1):
 			var webserver = WEBSERVER.new()
 			var tile_node = Node3D.new()
 			add_child(tile_node)
@@ -127,7 +143,11 @@ func _process(delta):
 			print(tile_node.name + "loading")
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
-			webserver.downloadFile(process_x, process_y + i, 655.25*(tiles_loaded_x_min), 655.25*i)
+			webserver.downloadFile(process_x, process_y + i, 655.25*(tiles_loaded_x_min), 655.25*(i + steps_y))
+			
+			var childnode = get_node(str(process_x + 4) + str(process_y + i))
+			remove_child(childnode)
+			
 		process_x = process_x + 2
 
 	#load tiles if going towards positive y border
@@ -135,7 +155,10 @@ func _process(delta):
 		tiles_loaded_y_max += 1
 		tiles_loaded_y_min += 1
 		process_y = process_y + 2
-		for i in range(tiles_loaded_x_min, tiles_loaded_x_max, 1):
+		
+		steps_y += 1
+		
+		for i in range(a, b, 1):
 			var webserver = WEBSERVER.new()
 			var tile_node = Node3D.new()
 			add_child(tile_node)
@@ -143,7 +166,11 @@ func _process(delta):
 			print(tile_node.name + "loading")
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
-			webserver.downloadFile(process_x + i, process_y, 655.25*i, 655.25*(tiles_loaded_y_max - 1))
+			webserver.downloadFile(process_x + i, process_y, 655.25*(i + steps_x), 655.25*(tiles_loaded_y_max - 1))
+			
+			var childnode = get_node(str(process_x + i) + str(process_y - 4))
+			remove_child(childnode)
+			
 		process_y = process_y -1
 
 	#load tiles if going towards negative y border
@@ -151,7 +178,10 @@ func _process(delta):
 		tiles_loaded_y_max -= 1
 		tiles_loaded_y_min -= 1
 		process_y = process_y - 3
-		for i in range(tiles_loaded_x_min, tiles_loaded_x_max, 1):
+		
+		steps_y -= 1
+		
+		for i in range(a, b, 1):
 			var webserver = WEBSERVER.new()
 			var tile_node = Node3D.new()
 			add_child(tile_node)
@@ -159,5 +189,9 @@ func _process(delta):
 			print(tile_node.name + " loading")
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
-			webserver.downloadFile(process_x + i, process_y, 655.25*i, 655.25*tiles_loaded_y_min)
+			webserver.downloadFile(process_x + i, process_y, 655.25*(i + steps_x), 655.25*tiles_loaded_y_min)
+			
+			var childnode = get_node(str(process_x + i) + str(process_y + 4))
+			remove_child(childnode)
+			
 		process_y = process_y + 2

@@ -1,7 +1,7 @@
 extends "res://addons/gut/test.gd"
 
 const MVT = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
-const CALCULATE_POLYGON = preload("res://src/calculate_polygon_vectors.gd")
+const CALCULATE_POLYGON = preload("res://src/polygons/calculate_polygon_vectors.gd")
 const TYPE = "buildings"
 
 func get_tile():
@@ -42,7 +42,7 @@ func test_calculate_polygon_vectors():
 		[Vector2(682.32, -19.96), Vector2(685.8, -25.12), Vector2(695.52, -18.48), Vector2(692.04, -13.32)],
 	]
 
-	var output = CALCULATE_POLYGON.calculate_polygon_vectors(input)
+	var output = CALCULATE_POLYGON.calculate_polygon_vectors(input, 0, 0)
 	
 	for i in range(output.size()):
 		for j in range(output[i].size()):
