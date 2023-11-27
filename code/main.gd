@@ -3,26 +3,20 @@ extends Node3D
 const MVT_READER = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
 const WEBSERVER = preload("res://src/webserver.gd")
 
+const CALCULATE_LINESTRING_VECTORS = preload("res://src/linestrings/calculate_linestring_vectors.gd")
+const BUILD_LINESTRINGS = preload("res://src/linestrings/build_linestrings.gd")
+
 const CALCULATE_POLYGON_VECTORS = preload("res://src/polygons/calculate_polygon_vectors.gd")
 const CALCULATE_POLYGON_HEIGHT = preload("res://src/polygons/calculate_polygon_heights.gd")
-
-const CALCULATE_LINESTRING_VECTORS = preload("res://src/linestrings/calculate_linestring_vectors.gd")
-const BUILD_LINESTRINGS = preload("res://src/linestrings/build_linestring.gd")
+const BUILD_POLYGONS = preload("res://src/polygons/build_polygons.gd")
 
 const POINTS = preload("res://src/points/pois.gd")
 
 const BUILDINGS = "buildings"
+const NATURAL = "natural"
 const HIGHWAYS = "highways"
 const WATER = "water"
 const POINT = "point"
-
-
-# key represents the height
-const polygon_types = {
-	10: ["buildings", Color(211, 211, 211, 255)],
-	0.01: ["common", Color(0, 255, 0, 255)],
-#	2: ["water", Color(0, 0, 255, 255)],
-}
 
 var tiles_loaded_x_max = 2
 var tiles_loaded_x_min = -2
@@ -30,6 +24,9 @@ var tiles_loaded_y_max = 2
 var tiles_loaded_y_min = -2
 
 #starting points
+#const x = 34373
+#const y = 22990
+
 const x = 34312
 const y = 22947
 
@@ -39,6 +36,13 @@ var process_y = null
 
 var steps_x = 0
 var steps_y = 0
+
+const TYPE_COLOR = {
+	BUILDINGS: Color(0.5, 0.5, 0.5, 1.0),
+	NATURAL: Color(0.133, 0.545, 0.133, 1.0),
+	HIGHWAYS: Color(0, 0, 0, 255),
+	WATER: Color(0,0,255,255),
+}
 
 func _ready():
 #loading of initial 4*4 area
@@ -69,32 +73,35 @@ func render_geometries(x, y, offset_x, offset_y):
 	var tile = MVT_READER.load_tile(tilepath)
 	
 	var current_tile_node_path = str(x) + str(y)
-	var tile_node_current = get_node(current_tile_node_path)
+	var tile_node_current = get_node(current_tile_node_path) 
 	
 	for layer in tile.layers():
+		
 		if layer.name() == HIGHWAYS:
 			for feature in layer.features():
 				var linestring_geometries = CALCULATE_LINESTRING_VECTORS.build_linestring_geometries(feature.geometry())
-				BUILD_LINESTRINGS.generate_paths(linestring_geometries, tile_node_current, Color(0, 0, 0, 255), offset_x, offset_y)
+				BUILD_LINESTRINGS.generate_paths(linestring_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y)
+				
+		if layer.name() == BUILDINGS:
+			for feature in layer.features():
+				var polygon_heights = CALCULATE_POLYGON_HEIGHT.get_polygon_height(feature, layer, BUILDINGS)
+				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(feature.geometry())
+				BUILD_POLYGONS.generate_polygons(polygon_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y, polygon_heights)
 
 		if layer.name() == WATER:
 			for feature in layer.features():
-				var linestring_geometries = CALCULATE_LINESTRING_VECTORS.build_linestring_geometries(feature.geometry())
-				BUILD_LINESTRINGS.generate_paths(linestring_geometries, tile_node_current, Color(0,0,255,255), offset_x, offset_y)
+				var type = feature.geom_type()
+				if (type["GeomType"] == "LINESTRING"):
+					var linestring_geometries = CALCULATE_LINESTRING_VECTORS.build_linestring_geometries(feature.geometry())
+					BUILD_LINESTRINGS.generate_paths(linestring_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y)
+				if (type["GeomType"] == "POLYGON"):
+					var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(feature.geometry())
+					BUILD_POLYGONS.generate_polygons(polygon_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y)
 
 		if layer.name() == POINT:
 			pass
 			#POINTS.generate_pois(tile, tile_current, offset_x, offset_y)
-
-		for height in polygon_types.keys():
-			var polygon_type_data = polygon_types[height]
-			if polygon_type_data[0] == layer.name():
-				var polygons = CALCULATE_POLYGON_VECTORS.get_polygon_vectors(tile, polygon_type_data[0], offset_x, offset_y)
-				var polygon_heights = CALCULATE_POLYGON_HEIGHT.get_polygon_height(tile, polygon_type_data[0])
-
-				for i in range(polygons.size()):
-					var color = polygon_type_data[1]
-					tile_node_current.add_child(CALCULATE_POLYGON_VECTORS.generate_polygon(polygons[i], polygon_heights[i], color, layer.name()))
+			
 
 func _process(delta):
 	var current_location = $Player.position
@@ -117,7 +124,6 @@ func _process(delta):
 			var tile_node = Node3D.new()
 			add_child(tile_node)
 			tile_node.name = str(process_x) + str(process_y + i)
-			print(tile_node.name + "loading")
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.downloadFile(process_x, process_y+i, 655.25*(tiles_loaded_x_max - 1), 655.25*(i + steps_y))
@@ -140,7 +146,6 @@ func _process(delta):
 			var tile_node = Node3D.new()
 			add_child(tile_node)
 			tile_node.name = str(process_x) + str(process_y + i)
-			print(tile_node.name + "loading")
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.downloadFile(process_x, process_y + i, 655.25*(tiles_loaded_x_min), 655.25*(i + steps_y))
@@ -163,7 +168,6 @@ func _process(delta):
 			var tile_node = Node3D.new()
 			add_child(tile_node)
 			tile_node.name = str(process_x + i) + str(process_y)
-			print(tile_node.name + "loading")
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.downloadFile(process_x + i, process_y, 655.25*(i + steps_x), 655.25*(tiles_loaded_y_max - 1))
@@ -186,7 +190,6 @@ func _process(delta):
 			var tile_node = Node3D.new()
 			add_child(tile_node)
 			tile_node.name = str(process_x + i) + str(process_y)
-			print(tile_node.name + " loading")
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.downloadFile(process_x + i, process_y, 655.25*(i + steps_x), 655.25*tiles_loaded_y_min)
