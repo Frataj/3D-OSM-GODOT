@@ -5,7 +5,7 @@ static func generate_polygons(vectors, caller_node, color, offset_x, offset_y, h
 		var vactors_with_offset = []
 		for vector in vectors[i]:
 			vactors_with_offset.append((vector / 100) + Vector2(offset_x, offset_y))
-		var height = 1 if not heights else heights[i]
+		var height = 0.001 if not heights else heights[i]
 		var polygon = CREATE_CSGPOLYGON3D.create_polygon(color, vactors_with_offset)
 		polygon.depth = height
 		polygon.use_collision = true

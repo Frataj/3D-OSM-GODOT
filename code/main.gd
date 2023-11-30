@@ -13,7 +13,7 @@ const BUILD_POLYGONS = preload("res://src/polygons/build_polygons.gd")
 const POINTS = preload("res://src/points/pois.gd")
 
 const BUILDINGS = "buildings"
-const NATURAL = "natural"
+const COMMON = "common"
 const HIGHWAYS = "highways"
 const WATER = "water"
 const POINT = "point"
@@ -39,7 +39,7 @@ var steps_y = 0
 
 const TYPE_COLOR = {
 	BUILDINGS: Color(0.5, 0.5, 0.5, 1.0),
-	NATURAL: Color(0.133, 0.545, 0.133, 1.0),
+	COMMON: Color(0.133, 0.545, 0.133, 1.0),
 	HIGHWAYS: Color(0, 0, 0, 255),
 	WATER: Color(0,0,255,255),
 }
@@ -87,7 +87,13 @@ func render_geometries(x, y, offset_x, offset_y):
 				var polygon_heights = CALCULATE_POLYGON_HEIGHT.get_polygon_height(feature, layer, BUILDINGS)
 				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(feature.geometry())
 				BUILD_POLYGONS.generate_polygons(polygon_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y, polygon_heights)
+		
+		if layer.name() == COMMON:
+			for feature in layer.features():
+				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(feature.geometry())
+				BUILD_POLYGONS.generate_polygons(polygon_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y)
 
+		
 		if layer.name() == WATER:
 			for feature in layer.features():
 				var type = feature.geom_type()
