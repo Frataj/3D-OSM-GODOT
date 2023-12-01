@@ -27,8 +27,8 @@ var tiles_loaded_y_min = -2
 #const x = 34373
 #const y = 22990
 
-const x = 34312
-const y = 22947
+const x = 34311
+const y = 22943
 
 #updated process points
 var process_x = null
@@ -41,7 +41,7 @@ const TYPE_COLOR = {
 	BUILDINGS: Color(0.5, 0.5, 0.5, 1.0),
 	COMMON: Color(0.133, 0.545, 0.133, 1.0),
 	HIGHWAYS: Color(0, 0, 0, 255),
-	WATER: Color(0,0,255,255),
+	WATER: Color(0.004,0.34,0.61,0.4),
 }
 
 func _ready():
@@ -81,19 +81,18 @@ func render_geometries(x, y, offset_x, offset_y):
 			for feature in layer.features():
 				var linestring_geometries = CALCULATE_LINESTRING_VECTORS.build_linestring_geometries(feature.geometry())
 				BUILD_LINESTRINGS.generate_paths(linestring_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y)
-				
+
 		if layer.name() == BUILDINGS:
 			for feature in layer.features():
-				var polygon_heights = CALCULATE_POLYGON_HEIGHT.get_polygon_height(feature, layer, BUILDINGS)
+				var polygon_height = CALCULATE_POLYGON_HEIGHT.get_polygon_height(feature, layer, BUILDINGS)
 				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(feature.geometry())
-				BUILD_POLYGONS.generate_polygons(polygon_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y, polygon_heights)
-		
+				BUILD_POLYGONS.generate_polygons(polygon_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y, polygon_height)
+
 		if layer.name() == COMMON:
 			for feature in layer.features():
 				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(feature.geometry())
-				BUILD_POLYGONS.generate_polygons(polygon_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y)
+				BUILD_POLYGONS.generate_polygons(polygon_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y, 0.5)
 
-		
 		if layer.name() == WATER:
 			for feature in layer.features():
 				var type = feature.geom_type()
