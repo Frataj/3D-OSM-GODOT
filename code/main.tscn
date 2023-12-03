@@ -7,7 +7,7 @@
 script = ExtResource("1_e256x")
 
 [node name="Player" parent="." instance=ExtResource("1_yhjom")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 90.6147, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 90.615, 1)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.4892, 0.872172, 0, -0.872172, -0.4892, 0, 268.513, 0)

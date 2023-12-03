@@ -3,8 +3,8 @@ extends CharacterBody3D
 const ACCEL = 10
 const DEACCEL = 30
 
-const SPEED = 50.0
-const SPRINT_MULT = 2
+const SPEED = 300.0
+const SPRINT_MULT = 4
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.06
 
@@ -58,12 +58,12 @@ func _physics_process(delta):
 		velocity.y = JUMP_VELOCITY
 	
 	if Input.is_action_pressed("fly_up"):
-		velocity.y = 20
+		velocity.y = 100
 	if Input.is_action_just_released("fly_up"):
 		velocity.y = 0
 	
 	if Input.is_action_pressed("fly_down"):
-		velocity.y = -20
+		velocity.y = -100
 	if Input.is_action_just_released("fly_down"):
 		velocity.y = 0
 	

@@ -5,7 +5,6 @@ static func generate_pois(tile, node, offsetx, offsety):
 		if layer.name() == "point":
 			for feature in layer.features():
 				if feature.tags(layer).type == "tree":
-					print("found tree at", feature.geometry())
 					tree_locations.append((Vector3(feature.geometry()[0][1], 0, feature.geometry()[0][2])/100) + Vector3(offsetx, 0, offsety))
 	var tree_multimesh = MultiMeshInstance3D.new()
 	var multimesh_instance = MultiMesh.new()
