@@ -23,12 +23,12 @@ var tiles_loaded_x_min = -2
 var tiles_loaded_y_max = 2
 var tiles_loaded_y_min = -2
 
-#starting points
+#starting points rapperswil jona
 #const x = 34373
 #const y = 22990
 
-const x = 34311
-const y = 22943
+const x = 34318
+const y = 22954
 
 #updated process points
 var process_x = null
@@ -42,6 +42,14 @@ const TYPE_COLOR = {
 	COMMON: Color(0.133, 0.545, 0.133, 1.0),
 	HIGHWAYS: Color(0, 0, 0, 255),
 	WATER: Color(0.004,0.34,0.61,0.4),
+}
+
+const ROAD_WIDTHS = {
+	"motorway": 15,
+	"primary": 5.5,
+	"secondary": 5,
+	"tertiary": 4.5,
+	"residential": 4.5,
 }
 
 func _ready():
@@ -79,8 +87,12 @@ func render_geometries(x, y, offset_x, offset_y):
 		
 		if layer.name() == HIGHWAYS:
 			for feature in layer.features():
+				var width = null
+				if(feature.tags(layer).has("pathType")):
+					if ROAD_WIDTHS.has(feature.tags(layer).pathType):
+						width = ROAD_WIDTHS[feature.tags(layer).pathType]
 				var linestring_geometries = CALCULATE_LINESTRING_VECTORS.build_linestring_geometries(feature.geometry())
-				BUILD_LINESTRINGS.generate_paths(linestring_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y)
+				BUILD_LINESTRINGS.generate_paths(linestring_geometries, tile_node_current, TYPE_COLOR[layer.name()], offset_x, offset_y, width)
 
 		if layer.name() == BUILDINGS:
 			for feature in layer.features():

@@ -12,9 +12,10 @@ static func create_path3d(path, offset_x, offset_y) -> Path3D:
 	return path3d
 	
 # entry point
-static func generate_paths(path_points, caller_node, color, offset_x, offset_y):
-	var path_polygon = [Vector2(-1, 1), Vector2(0, 1.5), Vector2(1, 1.5), Vector2(1, 1)]
-
+static func generate_paths(path_points, caller_node, color, offset_x, offset_y, width = null):
+	var road_width = 2 if not width else width
+	var path_polygon = [Vector2(-(road_width/2), 1), Vector2(-(road_width/2), 1.5), Vector2((road_width/2), 1.5), Vector2((road_width/2), 1)]
+	
 	for path in path_points:
 		var path3d = create_path3d(path, offset_x, offset_y)
 		caller_node.add_child(path3d)
@@ -22,5 +23,6 @@ static func generate_paths(path_points, caller_node, color, offset_x, offset_y):
 		var polygon = CREATE_CSGPOLYGON3D.create_polygon(color, path_polygon)
 		polygon.mode = CSGPolygon3D.MODE_PATH
 		polygon.path_interval = 0.5
+		polygon.use_collision = true
 		polygon.path_node = path3d.get_path()
 		caller_node.add_child(polygon)
