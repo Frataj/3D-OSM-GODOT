@@ -5,6 +5,7 @@ static func create_polygon(color, vector) -> CSGPolygon3D:
 	polygon.material = create_material(color)
 	return polygon
 
+
 #helper for StandardMaterial3D
 static func create_material(color) -> StandardMaterial3D:
 	var material = StandardMaterial3D.new()
