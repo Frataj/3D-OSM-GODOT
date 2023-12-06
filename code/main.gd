@@ -108,7 +108,7 @@ func render_geometries(x, y, offset_x, offset_y):
 		if layer.name() == BUILDINGS:
 			for feature in layer.features():
 				var polygon_height = CALCULATE_POLYGON_HEIGHT.get_polygon_height(
-					feature, layer, BUILDINGS
+					feature, layer
 				)
 				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(
 					feature.geometry()

@@ -2,7 +2,7 @@ const HEIGHT_IN_LEVELS = "levels"
 const HEIGHT_IN_METERS = "height"
 
 
-static func get_polygon_height(feature, layer, type):
+static func get_polygon_height(feature, layer):
 	var heights = 0
 
 	var tag = feature.tags(layer)
