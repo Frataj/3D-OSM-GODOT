@@ -66,7 +66,7 @@ func _ready():
 			webserver.connect("download_completed", _on_download_completed)
 			process_x = START_X + i
 			process_y = START_Y + j
-			webserver.downloadFile(process_x, process_y, 655.25 * i, 655.25 * j)
+			webserver.download_file(process_x, process_y, 655.25 * i, 655.25 * j)
 	process_x = START_X
 	process_y = START_Y
 
@@ -190,7 +190,7 @@ func _process(delta):
 			tile_node.name = str(process_x) + str(process_y + i)
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
-			webserver.downloadFile(
+			webserver.download_file(
 				process_x, process_y + i, 655.25 * (tiles_loaded_x_max - 1), 655.25 * (i + steps_y)
 			)
 
@@ -214,7 +214,7 @@ func _process(delta):
 			tile_node.name = str(process_x) + str(process_y + i)
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
-			webserver.downloadFile(
+			webserver.download_file(
 				process_x, process_y + i, 655.25 * (tiles_loaded_x_min), 655.25 * (i + steps_y)
 			)
 
@@ -238,7 +238,7 @@ func _process(delta):
 			tile_node.name = str(process_x + i) + str(process_y)
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
-			webserver.downloadFile(
+			webserver.download_file(
 				process_x + i, process_y, 655.25 * (i + steps_x), 655.25 * (tiles_loaded_y_max - 1)
 			)
 
@@ -262,7 +262,7 @@ func _process(delta):
 			tile_node.name = str(process_x + i) + str(process_y)
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
-			webserver.downloadFile(
+			webserver.download_file(
 				process_x + i, process_y, 655.25 * (i + steps_x), 655.25 * tiles_loaded_y_min
 			)
 

@@ -7,8 +7,7 @@ var current_y = 0
 var offset_x = 0
 var offset_y = 0
 
-
-func downloadFile(x, y, offset_x, offset_y):
+func download_file(x, y, offset_x, offset_y):
 	self.current_x = x
 	self.current_y = y
 	self.offset_x = offset_x
@@ -24,7 +23,8 @@ func downloadFile(x, y, offset_x, offset_y):
 	http_request.request_completed.connect(_on_request_completed)
 	http_request.request(download_http)
 
-
+# parameters are required regardles of usage
+# gdlint:ignore = unused-argument
 func _on_request_completed(result, response_code, headers, body):
 	if response_code == 200:
 		emit_signal("download_completed", true, current_x, current_y, offset_x, offset_y)
