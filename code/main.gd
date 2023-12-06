@@ -20,24 +20,12 @@ const HIGHWAYS = "highways"
 const WATER = "water"
 const POINT = "point"
 
-var tiles_loaded_x_max = 2
-var tiles_loaded_x_min = -2
-var tiles_loaded_y_max = 2
-var tiles_loaded_y_min = -2
-
 #starting points rapperswil jona
 #const x = 34373
 #const y = 22990
 
-const x = 34318
-const y = 22954
-
-#updated process points
-var process_x = null
-var process_y = null
-
-var steps_x = 0
-var steps_y = 0
+const START_X = 34318
+const START_Y = 22954
 
 const TYPE_COLOR = {
 	BUILDINGS: Color(0.5, 0.5, 0.5, 1.0),
@@ -54,22 +42,33 @@ const ROAD_WIDTHS = {
 	"residential": 4.5,
 }
 
+var tiles_loaded_x_max = 2
+var tiles_loaded_x_min = -2
+var tiles_loaded_y_max = 2
+var tiles_loaded_y_min = -2
+
+#updated process points
+var process_x = null
+var process_y = null
+
+var steps_x = 0
+var steps_y = 0
 
 func _ready():
 #loading of initial 4*4 area
 	for i in range(-2, 2, 1):
 		for j in range(-2, 2, 1):
 			var tile_node = Node3D.new()
-			tile_node.name = str(x + i) + str(y + j)
+			tile_node.name = str(START_X + i) + str(START_Y + j)
 			add_child(tile_node)
 			var webserver = WEBSERVER.new()
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
-			process_x = x + i
-			process_y = y + j
+			process_x = START_X + i
+			process_y = START_Y + j
 			webserver.downloadFile(process_x, process_y, 655.25 * i, 655.25 * j)
-	process_x = x
-	process_y = y
+	process_x = START_X
+	process_y = START_Y
 
 
 func _on_download_completed(success, current_x, current_y, offset_x, offset_y):
@@ -167,11 +166,11 @@ func render_geometries(x, y, offset_x, offset_y):
 			pass
 			#POINTS.generate_pois(tile, tile_current, offset_x, offset_y)
 
-
+# _process needs an argument, even if its never used
+# gdlint:ignore = unused-argument
 func _process(delta):
-	var current_location = $Player.position
-	var tile_distance_x = int(current_location.x / 655.25)
-	var tile_distance_y = int(current_location.z / 655.25)
+	var tile_distance_x = int($Player.position.x / 655.25)
+	var tile_distance_y = int($Player.position.z / 655.25)
 
 	var a = -2
 	var b = 2
