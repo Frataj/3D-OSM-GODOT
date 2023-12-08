@@ -19,12 +19,13 @@ transform = Transform3D(1, 0, 0, 0, -0.4892, 0.872172, 0, -0.872172, -0.4892, 0,
 shadow_enabled = true
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+visible = false
 shape = SubResource("BoxShape3D_6b4qx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+visible = false
 mesh = SubResource("BoxMesh_hpnvx")
 skeleton = NodePath("../CollisionShape3D")
 

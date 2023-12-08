@@ -3,14 +3,12 @@ extends Node3D
 const MVT_READER = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
 const WEBSERVER = preload("res://src/webserver.gd")
 
-const CALCULATE_LINESTRING_VECTORS = preload(
-	"res://src/linestrings/calculate_linestring_vectors.gd"
-)
-const BUILD_LINESTRINGS = preload("res://src/linestrings/build_linestrings.gd")
+const LINESTRING_VECTOR_CALCULATOR = preload("res://src/linestrings/calculate_linestring_vectors.gd")
+const LINESTRING_BUILDER = preload("res://src/linestrings/build_linestrings.gd")
 
-const CALCULATE_POLYGON_VECTORS = preload("res://src/polygons/calculate_polygon_vectors.gd")
-const CALCULATE_POLYGON_HEIGHT = preload("res://src/polygons/calculate_polygon_heights.gd")
-const BUILD_POLYGONS = preload("res://src/polygons/build_polygons.gd")
+const POLYGON_VECTOR_CALCULATOR = preload("res://src/polygons/calculate_polygon_vectors.gd")
+const POLYGON_HEIGHT_CALCULATOR = preload("res://src/polygons/calculate_polygon_heights.gd")
+const POLYGON_BUILDER = preload("res://src/polygons/build_polygons.gd")
 
 const POINTS = preload("res://src/points/pois.gd")
 
@@ -94,8 +92,10 @@ func render_geometries(x, y, offset_x, offset_y):
 	var floor = CSGPolygon3D.new()
 	var polygonVectors = [Vector2(0,0), Vector2(0, 655.25), Vector2(655.25, 655.25), Vector2(655.25, 0)]
 	floor.polygon = polygonVectors
+	floor.depth = 0.1
+	floor.use_collision = true
 	floor.rotate(Vector3(1, 0, 0), deg_to_rad(90))
-	floor.translate(Vector3(offset_x, offset_y, 2))
+	floor.translate(Vector3(offset_x, offset_y, 0.1))
 	tile_node_current.add_child(floor)
 
 	for layer in tile.layers():
@@ -106,9 +106,9 @@ func render_geometries(x, y, offset_x, offset_y):
 					if ROAD_WIDTHS.has(feature.tags(layer).pathType):
 						width = ROAD_WIDTHS[feature.tags(layer).pathType]
 				var linestring_geometries = (
-					CALCULATE_LINESTRING_VECTORS.build_linestring_geometries(feature.geometry())
+					LINESTRING_VECTOR_CALCULATOR.build_linestring_geometries(feature.geometry())
 				)
-				BUILD_LINESTRINGS.generate_paths(
+				LINESTRING_BUILDER.generate_paths(
 					linestring_geometries,
 					tile_node_current,
 					TYPE_COLOR[layer.name()],
@@ -119,13 +119,13 @@ func render_geometries(x, y, offset_x, offset_y):
 
 		if layer.name() == BUILDINGS:
 			for feature in layer.features():
-				var polygon_height = CALCULATE_POLYGON_HEIGHT.get_polygon_height(
+				var polygon_height = POLYGON_HEIGHT_CALCULATOR.get_polygon_height(
 					feature, layer
 				)
-				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(
+				var polygon_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(
 					feature.geometry()
 				)
-				BUILD_POLYGONS.generate_polygons(
+				POLYGON_BUILDER.generate_polygons(
 					polygon_geometries,
 					tile_node_current,
 					TYPE_COLOR[layer.name()],
@@ -136,10 +136,10 @@ func render_geometries(x, y, offset_x, offset_y):
 
 		if layer.name() == COMMON:
 			for feature in layer.features():
-				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(
+				var polygon_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(
 					feature.geometry()
 				)
-				BUILD_POLYGONS.generate_polygons(
+				POLYGON_BUILDER.generate_polygons(
 					polygon_geometries,
 					tile_node_current,
 					TYPE_COLOR[layer.name()],
@@ -153,9 +153,9 @@ func render_geometries(x, y, offset_x, offset_y):
 				var type = feature.geom_type()
 				if type["GeomType"] == "LINESTRING":
 					var linestring_geometries = (
-						CALCULATE_LINESTRING_VECTORS.build_linestring_geometries(feature.geometry())
+						LINESTRING_VECTOR_CALCULATOR.build_linestring_geometries(feature.geometry())
 					)
-					BUILD_LINESTRINGS.generate_paths(
+					LINESTRING_BUILDER.generate_paths(
 						linestring_geometries,
 						tile_node_current,
 						TYPE_COLOR[layer.name()],
@@ -163,10 +163,10 @@ func render_geometries(x, y, offset_x, offset_y):
 						offset_y
 					)
 				if type["GeomType"] == "POLYGON":
-					var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(
+					var polygon_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(
 						feature.geometry()
 					)
-					BUILD_POLYGONS.generate_polygons(
+					POLYGON_BUILDER.generate_polygons(
 						polygon_geometries,
 						tile_node_current,
 						TYPE_COLOR[layer.name()],
@@ -176,14 +176,14 @@ func render_geometries(x, y, offset_x, offset_y):
 
 		if layer.name() == POINT:
 			pass
-			#POINTS.generate_pois(tile, tile_current, offset_x, offset_y)
+			#POINTS.generate_pois(tile, tile_node_current, offset_x, offset_y)
 		
 		if layer.name() == NATURAL:
 			for feature in layer.features():
-				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(
+				var polygon_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(
 					feature.geometry()
 				)
-				BUILD_POLYGONS.generate_polygons(
+				POLYGON_BUILDER.generate_polygons(
 					polygon_geometries,
 					tile_node_current,
 					TYPE_COLOR[layer.name()],
