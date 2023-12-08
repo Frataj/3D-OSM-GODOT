@@ -19,19 +19,21 @@ const COMMON = "common"
 const HIGHWAYS = "highways"
 const WATER = "water"
 const POINT = "point"
+const NATURAL = "natural"
 
 #starting points rapperswil jona
 #const x = 34373
 #const y = 22990
 
 const START_X = 34318
-const START_Y = 22954
+const START_Y = 22952
 
 const TYPE_COLOR = {
 	BUILDINGS: Color(0.5, 0.5, 0.5, 1.0),
 	COMMON: Color(0.133, 0.545, 0.133, 1.0),
-	HIGHWAYS: Color(0, 0, 0, 255),
+	HIGHWAYS: Color(0, 0, 0, 1),
 	WATER: Color(0.004, 0.34, 0.61, 0.4),
+	NATURAL: Color(0.21, 0.42, 0.21, 1),
 }
 
 const ROAD_WIDTHS = {
@@ -69,6 +71,9 @@ func _ready():
 			webserver.download_file(process_x, process_y, 655.25 * i, 655.25 * j)
 	process_x = START_X
 	process_y = START_Y
+#	var tile = MVT_READER.load_tile("res://tiles/" + str(START_X) + str(START_Y))
+#	for layer in tile.layers():
+#		print(layer.name())
 
 
 func _on_download_completed(success, current_x, current_y, offset_x, offset_y):
@@ -85,6 +90,13 @@ func render_geometries(x, y, offset_x, offset_y):
 
 	var current_tile_node_path = str(x) + str(y)
 	var tile_node_current = get_node(current_tile_node_path)
+	
+	var floor = CSGPolygon3D.new()
+	var polygonVectors = [Vector2(0,0), Vector2(0, 655.25), Vector2(655.25, 655.25), Vector2(655.25, 0)]
+	floor.polygon = polygonVectors
+	floor.rotate(Vector3(1, 0, 0), deg_to_rad(90))
+	floor.translate(Vector3(offset_x, offset_y, 2))
+	tile_node_current.add_child(floor)
 
 	for layer in tile.layers():
 		if layer.name() == HIGHWAYS:
@@ -165,6 +177,20 @@ func render_geometries(x, y, offset_x, offset_y):
 		if layer.name() == POINT:
 			pass
 			#POINTS.generate_pois(tile, tile_current, offset_x, offset_y)
+		
+		if layer.name() == NATURAL:
+			for feature in layer.features():
+				var polygon_geometries = CALCULATE_POLYGON_VECTORS.build_polygon_geometries(
+					feature.geometry()
+				)
+				BUILD_POLYGONS.generate_polygons(
+					polygon_geometries,
+					tile_node_current,
+					TYPE_COLOR[layer.name()],
+					offset_x,
+					offset_y,
+					0.5
+				)
 
 # _process needs an argument, even if its never used
 # gdlint:ignore = unused-argument
