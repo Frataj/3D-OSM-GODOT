@@ -1,5 +1,6 @@
 const CREATE_CSGPOLYGON3D = preload("res://src/common/create_csgpolygon3d.gd")
 
+
 # helper for Path3D
 static func create_path3d(path, offset_x, offset_y) -> Path3D:
 	var path3d = Path3D.new()
@@ -10,12 +11,18 @@ static func create_path3d(path, offset_x, offset_y) -> Path3D:
 
 	path3d.curve = curve
 	return path3d
-	
+
+
 # entry point
 static func generate_paths(path_points, caller_node, color, offset_x, offset_y, width = null):
 	var road_width = 2 if not width else width
-	var path_polygon = [Vector2(-(road_width/2), 1), Vector2(-(road_width/2), 1.5), Vector2((road_width/2), 1.5), Vector2((road_width/2), 1)]
-	
+	var path_polygon = [
+		Vector2(-(road_width / 2), 1),
+		Vector2(-(road_width / 2), 1.5),
+		Vector2(road_width / 2, 1.5),
+		Vector2(road_width / 2, 1)
+	]
+
 	for path in path_points:
 		var path3d = create_path3d(path, offset_x, offset_y)
 		caller_node.add_child(path3d)

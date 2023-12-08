@@ -1,6 +1,9 @@
 const CREATE_CSGPOLYGON3D = preload("res://src/common/create_csgpolygon3d.gd")
 
-static func generate_polygons(vectors, caller_node, color, offset_x, offset_y, polygon_height = null):
+
+static func generate_polygons(
+	vectors, caller_node, color, offset_x, offset_y, polygon_height = null
+):
 	for i in range(vectors.size()):
 		var vactors_with_offset = []
 		for vector in vectors[i]:

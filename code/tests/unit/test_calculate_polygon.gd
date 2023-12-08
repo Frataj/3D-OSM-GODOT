@@ -42,7 +42,7 @@ func test_calculate_polygon_vectors():
 		[Vector2(682.32, -19.96), Vector2(685.8, -25.12), Vector2(695.52, -18.48), Vector2(692.04, -13.32)],
 	]
 
-	var output = CALCULATE_POLYGON.calculate_polygon_vectors(input, 0, 0)
+	var output = CALCULATE_POLYGON.calculate_polygon_vectors(input)
 	
 	for i in range(output.size()):
 		for j in range(output[i].size()):
