@@ -151,17 +151,7 @@ func render_geometries(x, y, offset_x, offset_y):
 		if layer.name() == WATER:
 			for feature in layer.features():
 				var type = feature.geom_type()
-				if type["GeomType"] == "LINESTRING":
-					var linestring_geometries = (
-						LINESTRING_VECTOR_CALCULATOR.build_linestring_geometries(feature.geometry())
-					)
-					LINESTRING_BUILDER.generate_paths(
-						linestring_geometries,
-						tile_node_current,
-						TYPE_COLOR[layer.name()],
-						offset_x,
-						offset_y
-					)
+				
 				if type["GeomType"] == "POLYGON":
 					var polygon_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(
 						feature.geometry()
