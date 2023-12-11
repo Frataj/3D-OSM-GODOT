@@ -1,12 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://beh8eahr3g53c"]
+[gd_scene load_steps=3 format=3 uid="uid://beh8eahr3g53c"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_e256x"]
 [ext_resource type="PackedScene" uid="uid://dgpjxoygnvyy4" path="res://assets/simple_fpsplayer/Player.tscn" id="1_yhjom"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6b4qx"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_hpnvx"]
-size = Vector3(655.25, 1, 655.25)
 
 [node name="main_world" type="Node3D"]
 script = ExtResource("1_e256x")
@@ -17,16 +12,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 90.615, 1)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.4892, 0.872172, 0, -0.872172, -0.4892, 0, 268.513, 0)
 shadow_enabled = true
-
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-visible = false
-shape = SubResource("BoxShape3D_6b4qx")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-visible = false
-mesh = SubResource("BoxMesh_hpnvx")
-skeleton = NodePath("../CollisionShape3D")
-
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]

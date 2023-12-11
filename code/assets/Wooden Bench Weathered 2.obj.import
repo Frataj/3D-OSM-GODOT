@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://d23tjfff4ntw0"
+path="res://.godot/imported/Wooden Bench Weathered 2.obj-92991cb6c38d6a81a7305768bfeffaaa.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Wooden Bench Weathered 2.obj-92991cb6c38d6a81a7305768bfeffaaa.mesh"]
+
+source_file="res://assets/Wooden Bench Weathered 2.obj"
+dest_files=["res://.godot/imported/Wooden Bench Weathered 2.obj-92991cb6c38d6a81a7305768bfeffaaa.mesh", "res://.godot/imported/Wooden Bench Weathered 2.obj-92991cb6c38d6a81a7305768bfeffaaa.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

@@ -23,7 +23,7 @@ const NATURAL = "natural"
 #const x = 34373
 #const y = 22990
 
-const START_X = 34318
+const START_X = 34322
 const START_Y = 22952
 
 const TYPE_COLOR = {
@@ -176,8 +176,7 @@ func render_geometries(x, y, offset_x, offset_y):
 					)
 
 		if layer.name() == POINT:
-			pass
-			#POINTS.generate_pois(tile, tile_node_current, offset_x, offset_y)
+			POINTS.generate_pois(tile, tile_node_current, offset_x, offset_y)
 		
 		if layer.name() == NATURAL:
 			for feature in layer.features():
