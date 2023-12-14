@@ -1,5 +1,16 @@
 extends Node3D
 
+############################
+#Set start position here
+const START_X = 58210
+const START_Y = 25805
+###########################
+
+#starting points rapperswil jona
+#const x = 34373
+#const y = 22990
+
+#DO NOT TOUCH!!!
 const MVT_READER = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
 const WEBSERVER = preload("res://src/webserver.gd")
 
@@ -18,13 +29,6 @@ const HIGHWAYS = "highways"
 const WATER = "water"
 const POINT = "point"
 const NATURAL = "natural"
-
-#starting points rapperswil jona
-#const x = 34373
-#const y = 22990
-
-const START_X = 34322
-const START_Y = 22952
 
 const TYPE_COLOR = {
 	BUILDINGS: Color(0.5, 0.5, 0.5, 1.0),
@@ -95,7 +99,7 @@ func render_geometries(x, y, offset_x, offset_y):
 	floor.depth = 0.1
 	floor.use_collision = true
 	floor.rotate(Vector3(1, 0, 0), deg_to_rad(90))
-	floor.translate(Vector3(offset_x, offset_y, 0.1))
+	floor.translate(Vector3(offset_x, offset_y, 1))
 	tile_node_current.add_child(floor)
 
 	for layer in tile.layers():

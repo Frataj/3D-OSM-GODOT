@@ -1,0 +1,1 @@
+Downloaded tiles will be stored in this folder.
