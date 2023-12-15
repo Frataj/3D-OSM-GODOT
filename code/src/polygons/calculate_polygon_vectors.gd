@@ -33,5 +33,5 @@ static func build_polygon_geometries(feature_geometry: Array) -> Array:
 
 		sanitized_geometries.append(current_geometry)
 		
-	return calculate_polygon_vectors(sanitized_geometries)
+	return sanitized_geometries
 	

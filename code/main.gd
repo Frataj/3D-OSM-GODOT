@@ -126,9 +126,15 @@ func render_geometries(x, y, offset_x, offset_y):
 				var polygon_height = POLYGON_HEIGHT_CALCULATOR.get_polygon_height(
 					feature, layer
 				)
-				var polygon_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(
-					feature.geometry()
-				)
+				
+				if(feature.geometry().size() > 3):
+					print(str(feature.geometry()))
+					#var sanitized_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(feature.geometry())
+					#print("after sanitizing: " + str(sanitized_geometries))
+				
+				var sanitized_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(feature.geometry())
+				var polygon_geometries = POLYGON_VECTOR_CALCULATOR.calculate_polygon_vectors(sanitized_geometries)
+				
 				POLYGON_BUILDER.generate_polygons(
 					polygon_geometries,
 					tile_node_current,
@@ -140,9 +146,9 @@ func render_geometries(x, y, offset_x, offset_y):
 
 		if layer.name() == COMMON:
 			for feature in layer.features():
-				var polygon_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(
-					feature.geometry()
-				)
+				var sanitized_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(feature.geometry())
+				var polygon_geometries = POLYGON_VECTOR_CALCULATOR.calculate_polygon_vectors(sanitized_geometries)
+				
 				POLYGON_BUILDER.generate_polygons(
 					polygon_geometries,
 					tile_node_current,
@@ -168,9 +174,9 @@ func render_geometries(x, y, offset_x, offset_y):
 					)
 				
 				if type["GeomType"] == "POLYGON":
-					var polygon_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(
-						feature.geometry()
-					)
+					var sanitized_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(feature.geometry())
+					var polygon_geometries = POLYGON_VECTOR_CALCULATOR.calculate_polygon_vectors(sanitized_geometries)
+					
 					POLYGON_BUILDER.generate_polygons(
 						polygon_geometries,
 						tile_node_current,
@@ -184,9 +190,9 @@ func render_geometries(x, y, offset_x, offset_y):
 		
 		if layer.name() == NATURAL:
 			for feature in layer.features():
-				var polygon_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(
-					feature.geometry()
-				)
+				var sanitized_geometries = POLYGON_VECTOR_CALCULATOR.build_polygon_geometries(feature.geometry())
+				var polygon_geometries = POLYGON_VECTOR_CALCULATOR.calculate_polygon_vectors(sanitized_geometries)
+				
 				POLYGON_BUILDER.generate_polygons(
 					polygon_geometries,
 					tile_node_current,
