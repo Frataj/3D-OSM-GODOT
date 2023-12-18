@@ -2,9 +2,12 @@ extends Node3D
 
 ############################
 #Set start position here
-const START_X = 58210
-const START_Y = 25805
+#const START_X = 58210
+#const START_Y = 25805
 ###########################
+
+const START_X = 34319
+const START_Y = 22950
 
 #DO NOT TOUCH!!!
 const MVT_READER = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
@@ -75,6 +78,7 @@ func render_geometries(x, y, offset_x, offset_y):
 				if feature.tags(layer).has("pathType"):
 					if CONSTANTS.WIDTHS.has(feature.tags(layer).pathType):
 						width = CONSTANTS.WIDTHS[feature.tags(layer).pathType]
+					
 				var linestring_geometries = (
 					LINESTRING_VECTOR_CALCULATOR.build_linestring_geometries(feature.geometry())
 				)
