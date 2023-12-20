@@ -10,11 +10,12 @@ static func handle_start_point(
 # helper for line strings
 static func handle_line_string(
 	path_points: Array, previous_point: Vector3, coordinates: Array
-) -> void:
+) -> Array:
 	for n in range(0, coordinates.size() - 1, 2):
 		var current_point = previous_point + Vector3(coordinates[n], 0, coordinates[n + 1])
 		path_points.append(current_point)
 		previous_point = current_point
+	return path_points
 
 
 # close shapes
@@ -38,7 +39,7 @@ static func build_linestring_geometries(feature_geometry: Array) -> Array:
 			)
 		elif feature_geometry[i][0] == 2:
 			feature_geometry[i].remove_at(0)
-			handle_line_string(path_points, previous_point, feature_geometry[i])
+			path_points = handle_line_string(path_points, previous_point, feature_geometry[i])
 			if i == feature_geometry.size() - 1:
 				paths.append(path_points)
 		elif feature_geometry[i][0] == 7:
