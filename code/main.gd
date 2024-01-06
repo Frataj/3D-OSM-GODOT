@@ -36,12 +36,9 @@ var steps_x = 0
 var steps_y = 0
 
 func _ready():
-#loading of initial 4*4 area
+	#loading of initial 4*4 area
 	for i in range(-2, 2, 1):
 		for j in range(-2, 2, 1):
-			var tile_node = Node3D.new()
-			tile_node.name = str(START_X + i) + str(START_Y + j)
-			add_child(tile_node)
 			var webserver = WEBSERVER.new()
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
@@ -66,8 +63,8 @@ func render_geometries(x, y, offset_x, offset_y):
 	var tilepath = "res://tiles/" + str(x) + str(y)
 	var tile = MVT_READER.load_tile(tilepath)
 
-	var current_tile_node_path = str(x) + str(y)
-	var tile_node_current = get_node(current_tile_node_path)
+	var tile_node_current = Node3D.new()
+	tile_node_current.name = str(x + offset_x) + str(y + offset_y)
 
 	FLOOR_BUILDER.build_floor(tile_node_current, offset_x, offset_y)
 
@@ -181,6 +178,8 @@ func render_geometries(x, y, offset_x, offset_y):
 					0.5
 				)
 
+	add_child(tile_node_current)
+
 # _process needs an argument, even if its never used
 # gdlint:ignore = unused-argument
 func _process(delta):
@@ -197,9 +196,6 @@ func _process(delta):
 
 		for i in range(-2, 2, 1):
 			var webserver = WEBSERVER.new()
-			var tile_node = Node3D.new()
-			add_child(tile_node)
-			tile_node.name = str(process_x) + str(process_y + i)
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.download_file(
@@ -224,9 +220,6 @@ func _process(delta):
 
 		for i in range(-2, 2, 1):
 			var webserver = WEBSERVER.new()
-			var tile_node = Node3D.new()
-			add_child(tile_node)
-			tile_node.name = str(process_x) + str(process_y + i)
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.download_file(
@@ -251,9 +244,6 @@ func _process(delta):
 
 		for i in range(-2, 2, 1):
 			var webserver = WEBSERVER.new()
-			var tile_node = Node3D.new()
-			add_child(tile_node)
-			tile_node.name = str(process_x + i) + str(process_y)
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.download_file(
@@ -278,9 +268,6 @@ func _process(delta):
 
 		for i in range(-2, 2, 1):
 			var webserver = WEBSERVER.new()
-			var tile_node = Node3D.new()
-			add_child(tile_node)
-			tile_node.name = str(process_x + i) + str(process_y)
 			add_child(webserver)
 			webserver.connect("download_completed", _on_download_completed)
 			webserver.download_file(
