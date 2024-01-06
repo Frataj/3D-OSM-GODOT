@@ -10,7 +10,6 @@ const START_X = 34319
 const START_Y = 22950
 
 #DO NOT TOUCH!!!
-const MVT_READER = preload("res://addons/geo-tile-loader/vector_tile_loader.gd")
 const WEBSERVER = preload("res://src/webserver.gd")
 const CONSTANTS = preload("res://src/common/constants.gd")
 const POLYGON_VECTOR_CALCULATOR = preload("res://src/polygons/calculate_polygon_vectors.gd")
@@ -51,18 +50,15 @@ func _ready():
 	process_y = START_Y
 
 
-func _on_download_completed(success, current_x, current_y, offset_x, offset_y):
+func _on_download_completed(success, tile, current_x, current_y, offset_x, offset_y):
 	if success:
-		print("download successfull for: x=", current_x, ", ", current_y)
-		render_geometries(current_x, current_y, offset_x, offset_y)
+		print("download successful for: x=", current_x, ", ", current_y)
+		render_geometries(tile, current_x, current_y, offset_x, offset_y)
 	else:
 		print("Download failed or timed out.")
 
 
-func render_geometries(x, y, offset_x, offset_y):
-	var tilepath = "res://tiles/" + str(x) + str(y)
-	var tile = MVT_READER.load_tile(tilepath)
-
+func render_geometries(tile, x, y, offset_x, offset_y):
 	var tile_node_current = Node3D.new()
 	tile_node_current.name = str(x + offset_x) + str(y + offset_y)
 
