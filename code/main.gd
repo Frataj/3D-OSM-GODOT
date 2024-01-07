@@ -61,6 +61,7 @@ func _on_download_completed(success, tile, current_x, current_y, offset_x, offse
 func render_geometries(tile, x, y, offset_x, offset_y):
 	var tile_node_current = Node3D.new()
 	tile_node_current.name = str(x + offset_x) + str(y + offset_y)
+	add_child(tile_node_current)
 
 	FLOOR_BUILDER.build_floor(tile_node_current, offset_x, offset_y)
 
@@ -174,7 +175,6 @@ func render_geometries(tile, x, y, offset_x, offset_y):
 					0.5
 				)
 
-	add_child(tile_node_current)
 
 # _process needs an argument, even if its never used
 # gdlint:ignore = unused-argument
