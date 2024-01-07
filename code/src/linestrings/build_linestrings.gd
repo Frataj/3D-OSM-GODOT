@@ -29,7 +29,8 @@ static func generate_paths(path_points, caller_node, color, offset_x, offset_y, 
 
 		var polygon = CREATE_CSGPOLYGON3D.create_polygon(color, path_polygon)
 		polygon.mode = CSGPolygon3D.MODE_PATH
-		polygon.path_interval = 0.5
+		#polygon.path_interval = 0.5
+		polygon.path_simplify_angle = 3.0
 		polygon.use_collision = true
 		polygon.path_node = path3d.get_path()
 		caller_node.add_child(polygon)
